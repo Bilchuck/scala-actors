@@ -15,7 +15,6 @@ object Actors {
     def receive: Receive = {
       // Define the behavior here..
       case Greeting(who) => println(s"Hello $who")
-      case Respond(_) => sender ! "hey"
     }
   }
 
@@ -27,31 +26,6 @@ object Actors {
 
   import akka.actor.Props
 
-  val nrOfInstances = 5
-  val router: ActorRef = system.actorOf(
-    RoundRobinPool(nrOfInstances)
-      .withResizer(DefaultResizer(2, 15))
-      .props(Props[GreetingActor]))
+  val actorRef = ???
 
-  object A {
-    object ThreadsUnprotectedUid extends App {
-      var uidCount = 0L
-      def getUniqueId() = this.synchronized {
-        val freshUid = uidCount + 1
-        uidCount = freshUid
-        freshUid
-      }
-      def printUniqueIds(n: Int): Unit = {
-        val uids = for (i<- 0 until n) yield getUniqueId()
-        log(s"Generated uids: $uids")
-      }
-      val t = thread { printUniqueIds(5) }
-      printUniqueIds(5)
-      t.join()
-    }
-
-
-
-
-  }
 }

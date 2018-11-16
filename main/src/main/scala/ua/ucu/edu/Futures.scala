@@ -1,6 +1,5 @@
 package ua.ucu.edu
 
-import scala.collection.immutable
 import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.util.{Failure, Success}
 
@@ -27,10 +26,5 @@ object Futures {
     case Failure(exception)  => ???
   }(executionContext)
 
-  val eggs = (1 to 5).map(_ => eggF)
-  val seqEggs: Future[Seq[Egg]] = Future.sequence(eggs)
-  val travCrackedEggs: Future[Seq[Cracked]] = Future.traverse(
-    1 to 5 map (_ => chickenMagic())
-  )(egg => Future(crack(egg)))
 
 }

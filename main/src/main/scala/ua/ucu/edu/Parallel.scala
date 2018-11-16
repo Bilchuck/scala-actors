@@ -4,32 +4,32 @@ import java.util.concurrent.{ForkJoinPool, ForkJoinWorkerThread, RecursiveTask}
 
 trait Task[A] {
   def join: A // blocks and returns when ready
-
-  (1 to 2).par
 }
 object Task {
 
-  // https://github.com/rohgar/scala-parallel-programming-3/blob/master/resources/source/package-parallel.pdf
-  // todo
-  val forkJoinPool = new ForkJoinPool
-
-  def task[T](e: => T): Task[T] = {
-    val t = new RecursiveTask[T] {
-      def compute: T = e
-    }
-    // schedule
-    Thread.currentThread match {
-      case worker: ForkJoinWorkerThread =>
-        t.fork
-      case _ => forkJoinPool.execute(t)
-    }
-    // return the scheduled task
-    new Task[T] {
-      def join: T = t.join
-    }
-  }
+  def task[T](e: => T): Task[T] = ???
 }
 
+
+object Parallel {
+
+  def parallel[A, B](cA: => A, cB: => B): (A, B) = {
+    val tB: Task[B] = Task.task { cB }
+    val tA: A = cA
+    (tA, tB.join)
+  }
+
+  def parallelWrong[A, B](cA: => A, cB: => B): (A, B) = {
+    val tB: B = Task.task {
+      cB
+    }.join
+    val tA: A = cA
+    (tA, tB)
+  }
+  // Here join is called on tb where we are creating the task to be executed in parallel.
+  // So first we wait until tb is calculated. Then we calculated ta.
+  // So we are not doing these tasks in parallel
+}
 
 /*
 Consider a square of side length = 2 and a circle of diameter = 2.
@@ -56,25 +56,9 @@ object MC {
     hits
   }
 
-  def parallel[A, B](cA: => A, cB: => B): (A, B) = {
-    val tB: Task[B] = Task.task { cB }
-    val tA: A = cA
-    (tA, tB.join)
-  }
-
-  def parallelWrong[A, B](cA: => A, cB: => B): (A, B) = {
-    val tB: B = (Task.task { cB }).join
-    val tA: A = cA
-    (tA, tB)
-  }
-  // Here join is called on tb where we are creating the task to be executed in parallel.
-  // So first we wait until tb is calculated. Then we calculated ta.
-  // So we are not doing these tasks in parallel.
-
-
-
   def monteCarloPiSeq(iter: Int): Double = 4.0 * mcCount(iter) / iter
 
+  import Parallel._
   def monteCarloPiPar(iter: Int): Double = {
     val ((pi1, pi2), (pi3, pi4)) = parallel( parallel(mcCount(iter/4), mcCount(iter/4)),
       parallel(mcCount(iter/4), mcCount(iter - 3*(iter/4))) )
