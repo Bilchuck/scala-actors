@@ -1,6 +1,6 @@
 **/hidden
-main/src/main/scala/ua/ucu/edu/handson1/*
-**/handson1/*
+main/src/main/scala/ua/ucu/edu/handson/*
+**/handson/*
 .idea
 target
 project/target
