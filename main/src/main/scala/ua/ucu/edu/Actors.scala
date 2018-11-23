@@ -1,33 +1,31 @@
 package ua.ucu.edu
 
-import akka.actor.{Actor, ActorRef}
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 import akka.routing.{DefaultResizer, RoundRobinPool, RoundRobinRoutingLogic, Router}
+import ua.ucu.edu.patterns.ActorSystems
 
-object Actors {
+object Actors extends App {
 
-  // Message Protocol
-  case class Greeting(who: String)
-  case class Respond(gr: Greeting)
+  /* protocol */
+  case class Hey(msg: String)
+//  case object WhatsMyName
+//  case class Name(name: String)
+  case class MakeChild(name: String)
 
-  class GreetingActor extends Actor {
-    // Put mutable state in here..
+  class HeyActor extends Actor with ActorLogging {
 
-    def receive: Receive = {
-      // Define the behavior here..
-      case Greeting(who) => println(s"Hello $who")
+    override def receive: Receive = {
+      case Hey(msg) => log.info(s"==\n==\n==Hey, $msg")
     }
   }
 
-  import akka.actor.ActorSystem
-  import akka.actor.Props
+  implicit val system: ActorSystem = ActorSystem("test-system")
 
-  val system: ActorSystem = ActorSystem.create("MySystem")
-  val greeter: ActorRef = system.actorOf(Props(classOf[Greeting]), "greeter")
+  val actor = system.actorOf(Props[HeyActor])
 
-  greeter ! ""
+  actor ! Hey("dude")
 
-  import akka.actor.Props
+  system.actorSelection("/user/dude")
 
-  val actorRef = ???
-
+  system.terminate()
 }

@@ -6,11 +6,10 @@ case class SayHello(name: String)
 
 class GreetingActor_2 extends Actor {
 
-  def receive = {
-    case hello : SayHello => {
+  def receive: Receive = {
+    case hello : SayHello =>
       println("Hello " + hello.name)
       sender ! " a reply"
-    }
   }
 
 }

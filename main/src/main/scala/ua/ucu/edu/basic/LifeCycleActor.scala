@@ -11,7 +11,7 @@ import akka.util.Timeout
 case class CreateLifeCycleActor()
 
 class LifeCycleActor extends Actor {
-  def receive = {
+  def receive: Receive = {
     case e: Exception => throw e
   }
 
@@ -34,17 +34,16 @@ class LifeCycleActor extends Actor {
 
 class LifeCycleActorSupervisor extends Actor {
 
-  override val supervisorStrategy =
+  override val supervisorStrategy: OneForOneStrategy =
     OneForOneStrategy(maxNrOfRetries = 10, withinTimeRange = 1 minute, loggingEnabled = false) {
       case _ => Restart
     }
 
-    def receive = {
-      case CreateLifeCycleActor => {
+    def receive: Receive = {
+      case CreateLifeCycleActor =>
         val actorRef: ActorRef = context.actorOf(Props[LifeCycleActor])
         sender ! actorRef
-      }
-      case _ => {}
+      case _ =>
     }
 }
 
@@ -52,7 +51,7 @@ class LifeCycleActorSupervisor extends Actor {
 object LifeCycleActor extends App {
     val system = ActorSystem("MySystem")
     val supervisor = system.actorOf(Props[LifeCycleActorSupervisor])
-    implicit val timeout = Timeout(5 seconds)
+    implicit val timeout: Timeout = Timeout(5 seconds)
     private val futureActorRef = supervisor ? CreateLifeCycleActor
     private val actorRef: ActorRef = Await.result(futureActorRef, Duration.Inf).asInstanceOf[ActorRef]
     actorRef ! new RuntimeException

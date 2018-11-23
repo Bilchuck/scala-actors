@@ -12,11 +12,10 @@ class GreetingActor_3(myInterval: FiniteDuration) extends Actor {
     scheduleNextGreeting()
   }
 
-  def receive = {
-    case DoGreeting => {
+  def receive: Receive = {
+    case DoGreeting =>
       println("Hello!")
       scheduleNextGreeting()
-    }
   }
 
   def scheduleNextGreeting() {

@@ -4,7 +4,7 @@ import scala.language.postfixOps
 import akka.actor.{Actor, ActorRef, OneForOneStrategy, Props}
 import akka.actor.SupervisorStrategy.Stop
 import akka.event.Logging
-import ua.ucu.edu.basic_work.work.RiskyWork
+import ua.ucu.edu.handson.basic_work.work.RiskyWork
 
 import scala.concurrent.duration._
 

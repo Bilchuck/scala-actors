@@ -1,7 +1,7 @@
 package ua.ucu.edu.handson.workshop.part1
 
 import akka.actor.{Actor, ActorRef}
-import ua.ucu.edu.basic_work.work.RiskyWork
+import ua.ucu.edu.handson.basic_work.work.RiskyWork
 
 import scala.concurrent.duration._
 

@@ -2,7 +2,7 @@ package ua.ucu.edu.handson.workshop.part2
 
 import akka.actor.{Actor, ActorRef, Terminated}
 import akka.event.Logging
-import ua.ucu.edu.basic_work.work.{RiskyWork, RiskyWorkResult}
+import ua.ucu.edu.handson.basic_work.work.{RiskyWork, RiskyWorkResult}
 
 
 class ClientActor(computeSupervisor: ActorRef, resultActor: ActorRef, work: List[RiskyWork]) extends Actor {

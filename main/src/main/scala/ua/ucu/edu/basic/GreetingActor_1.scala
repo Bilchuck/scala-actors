@@ -4,7 +4,7 @@ import akka.actor._
 
 class GreetingActor_1 extends Actor {
 
-  def receive = {
+  def receive: Receive = {
     case message : String => println("Hello " + message)
   }
 
@@ -12,6 +12,6 @@ class GreetingActor_1 extends Actor {
 
 object GreetingActor_1 extends App {
   val system = ActorSystem("MySystem")
-  val actorRef = system.actorOf(Props(new GreetingActor_1))
+  val actorRef = system.actorOf(Props(new GreetingActor_1), "greeter1")
   actorRef ! "Hulk Hogan"
 }

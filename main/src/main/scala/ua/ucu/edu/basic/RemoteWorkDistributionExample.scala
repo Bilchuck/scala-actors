@@ -1,8 +1,8 @@
-package ua.ucu.edu.patterns
+package ua.ucu.edu.basic
 
-import akka.actor._
-import com.typesafe.config.ConfigFactory
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 import akka.routing.FromConfig
+import com.typesafe.config.ConfigFactory
 
 import scala.io.StdIn
 

@@ -4,7 +4,7 @@ import akka.actor.SupervisorStrategy.Resume
 import akka.actor.{Actor, ActorRef, OneForOneStrategy, Props}
 import akka.event.Logging
 import akka.routing._
-import ua.ucu.edu.basic_work.work.RiskyWork
+import ua.ucu.edu.handson.basic_work.work.RiskyWork
 
 import scala.concurrent.duration._
 import scala.language.postfixOps
