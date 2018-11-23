@@ -1,8 +1,6 @@
 package ua.ucu.edu
 
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
-import akka.routing.{DefaultResizer, RoundRobinPool, RoundRobinRoutingLogic, Router}
-import ua.ucu.edu.patterns.ActorSystems
 
 object Actors extends App {
 

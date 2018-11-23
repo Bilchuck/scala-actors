@@ -7,7 +7,7 @@ import akka.routing.{ActorRefRoutee, RoundRobinRoutingLogic, Router}
 object RouterExample extends App {
 
   class Master extends Actor {
-    var router = {
+    var router: Router = {
       val routees = (1 to 10).map { i: Int =>
         val r = context.actorOf(Props(classOf[Worker], i))
         context watch r
@@ -16,7 +16,7 @@ object RouterExample extends App {
       Router(RoundRobinRoutingLogic(), routees)
     }
 
-    def receive = {
+    def receive: Receive = {
       case Terminated(a) ⇒
         router = router.removeRoutee(a)
         val r = context.actorOf(Props[Worker])

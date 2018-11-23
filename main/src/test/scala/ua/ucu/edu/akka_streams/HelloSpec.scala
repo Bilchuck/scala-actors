@@ -11,8 +11,8 @@ import scala.concurrent.Future
 
 class HelloSpec extends FreeSpec {
   "An actor system and materializer should" - {
-    implicit val system = ActorSystem("HelloSpec")
-    implicit val materializer = ActorMaterializer()
+    implicit val system: ActorSystem = ActorSystem("HelloSpec")
+    implicit val materializer: ActorMaterializer = ActorMaterializer()
 
     "runForeach with a simple source" in {
       val source: Source[Int, NotUsed] = Source(1 to 10)
