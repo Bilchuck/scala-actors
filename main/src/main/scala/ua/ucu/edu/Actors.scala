@@ -22,7 +22,9 @@ object Actors {
   import akka.actor.Props
 
   val system: ActorSystem = ActorSystem.create("MySystem")
-  val greeter: ActorRef = system.actorOf(Props[Greeting], "greeter")
+  val greeter: ActorRef = system.actorOf(Props(classOf[Greeting]), "greeter")
+
+  greeter ! ""
 
   import akka.actor.Props
 

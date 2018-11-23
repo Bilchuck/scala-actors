@@ -3,18 +3,27 @@ import Dependencies._
 ThisBuild / version := "0.1"
 ThisBuild / organization := "ua.edu.ucu"
 ThisBuild / scalaVersion := "2.12.7"
-ThisBuild / libraryDependencies ++= Seq(
-  "com.storm-enroute" %% "scalameter-core" % "0.10.1"
-)
+ThisBuild / libraryDependencies ++= Seq(scalaMeter)
+//ThisBuild / scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 
 lazy val root = (project in file("."))
-  .settings(name := "streaming-ucu-week3")
-  .aggregate(week3_main, week3_home)
+  .settings(name := "streaming-ucu-week4")
+  .aggregate(main, home)
 
-lazy val week3_main = (project in file("main"))
+lazy val main = (project in file("main"))
     .settings(
       libraryDependencies ++= Seq(
-        akkaStream, akkaHttp, akkaActor, akkaHttpSpray,
-      )
+        akkaStream, akkaHttp, akkaActor, akkaCluster, 
+        akkaRemote, akkaPersistence, akkaAgent, // akka
+        alpakkaFile, alpakkaCSV, // alpakka
+        akkaSlf4j, logback, // logging
+        akkaStreamTestKit % Test, akkaHttpTestKit % Test, // akka testkit
+        scalaTest % Test, mockitoCore % Test, // testing
+        databinder
+      ),
+      testOptions in Test += Tests.Argument("-oD"),
+      fork in run := true,
+      connectInput in run := true
     )
-lazy val week3_home = project in file("home")
+
+lazy val home = project in file("home")
