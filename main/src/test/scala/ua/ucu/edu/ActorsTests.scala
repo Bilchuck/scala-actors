@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.testkit.{ImplicitSender, TestActors, TestKit, TestProbe}
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
-class Actors extends TestKit(ActorSystem("TestSpec")) with ImplicitSender
+class ActorsTests extends TestKit(ActorSystem("TestSpec")) with ImplicitSender
   with WordSpecLike with Matchers with BeforeAndAfterAll {
 
   override def afterAll: Unit = {

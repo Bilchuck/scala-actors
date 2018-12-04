@@ -14,7 +14,8 @@ object Dependencies {
   val akkaCluster = "com.typesafe.akka" %% "akka-cluster" % akkaVersion
   val akkaPersistence = "com.typesafe.akka" %% "akka-persistence" % akkaVersion
   val akkaStream = "com.typesafe.akka" %% "akka-stream" % akkaVersion
-  val akkaSlf4j = "com.typesafe.akka" %% "akka-slf4j"   % akkaVersion
+  val akkaSlf4j = "com.typesafe.akka" %% "akka-slf4j" % akkaVersion
+  val akkaTestKit = "com.typesafe.akka" %% "akka-testkit" % akkaVersion
   val akkaStreamTestKit = "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion
   val alpakkaFile = "com.lightbend.akka" %% "akka-stream-alpakka-file" % alpakkaVersion
   val alpakkaCSV = "com.lightbend.akka" %% "akka-stream-alpakka-csv" % alpakkaVersion

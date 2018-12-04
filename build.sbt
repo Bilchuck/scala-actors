@@ -3,7 +3,6 @@ import Dependencies._
 ThisBuild / version := "0.1"
 ThisBuild / organization := "ua.edu.ucu"
 ThisBuild / scalaVersion := "2.12.7"
-ThisBuild / libraryDependencies ++= Seq(scalaMeter)
 //ThisBuild / scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 
 lazy val root = (project in file("."))
@@ -26,4 +25,10 @@ lazy val main = (project in file("main"))
       connectInput in run := true
     )
 
-lazy val home = project in file("home")
+lazy val home = (project in file("home"))
+    .settings(
+      libraryDependencies ++= Seq(
+        akkaActor, akkaRemote, akkaTestKit % Test, scalaTest % Test
+      ),
+      testOptions in Test += Tests.Argument("-oD")
+    )
