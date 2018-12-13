@@ -23,9 +23,10 @@ class DemoAkkaSpec extends BaseAkkaSpec(ActorSystem("test-system")) {
     }
   }
 
-  class TestActor extends Actor with ActorLogging { _self =>
-    override def receive: Receive = {
-      case msg: String => _self.log.info(msg); sender ! s"ok, $msg"
-    }
+}
+
+class TestActor extends Actor with ActorLogging { _self =>
+  override def receive: Receive = {
+    case msg: String => _self.log.info(msg); sender ! s"ok, $msg"
   }
 }
