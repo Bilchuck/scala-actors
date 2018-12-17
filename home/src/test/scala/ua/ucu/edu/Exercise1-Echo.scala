@@ -30,7 +30,11 @@ import scala.concurrent.duration._
 
 class EchoActor extends Actor {
   override def receive: Receive = {
-    case msg: String => sender ! s"echo $msg"
+    case msg: String => sender ! s"echo String($msg)"
+    case num: Number => sender ! s"echo num($num)"
+    case Nil => sender ! s"echo null"
+    case obj: Object => sender ! s"echo some object"
+    case _ => throw new Error("Unexpected type")
   }
 }
 
@@ -40,55 +44,72 @@ class EchoActor extends Actor {
   */
 
 class EchoActorSpec extends BaseAkkaSpec(ActorSystem("test-system")) {
+  override protected def afterAll(): Unit = {
+    super.afterAll()
+    // stop actorRef here
+    shutdown(system)
+  }
+
   "Exercise1" should {
 
     "teach you how to reply to the first message" in {
-      val ref = system.actorOf(Props[EchoActor]);
+      val ref = system.actorOf(Props[EchoActor])
       ref ! "Boo"
-      expectMsg("echo Boo")
-      //TODO: Create an ActorRef pointing to an instance of your EchoActor
-
-      //TODO: Send the ActorRef a String message using ask pattern and make sure you get the expected response
-
-      //TODO: Stop actor which is referenced by this ActorRef
+      expectMsg("echo String(Boo)")
     }
 
     "teach you how to respond with different kinds of responses" in {
-      //TODO: Create an ActorRef pointing to an instance of your EchoActor
+      val ref = system.actorOf(Props[EchoActor])
 
-      //TODO: Send a lot of different kinds of messages (numbers, null, objects etc)
-      //      to the ActorRef and make sure you consistently get the expected response
+      object obj {
+        val name: String = "Anton"
+      }
+      ref ! "text"
+      ref ! 123
+      ref ! Nil
+      ref ! obj
 
-      //TODO: Stop the ActorRef
+      expectMsg("echo String(text)")
+      expectMsg("echo num(123)")
+      expectMsg("echo null")
+      expectMsg("echo some object")
     }
 
     "teach you what happens when you send a message to a stopped actor" in {
-      //TODO: Create an ActorRef pointing to an instance of your EchoActor
+      val ref = system.actorOf(Props[EchoActor])
 
-      //TODO: Send the ActorRef a String message using ? and make sure you get the expected response
+      ref ! "Before"
 
-      //TODO: Stop actor which is referenced by this ActorRef
+      system.stop(ref)
 
-      //TODO: Send a String message and test that no valid response received
+      ref ! "After"
+
+      expectMsg("echo String(Before)")
+      receiveN(1)
     }
 
     "teach you how to watch on actor state" in {
-      //TODO: Create an ActorRef pointing to an instance of your EchoActor
+      val ref = system.actorOf(Props[EchoActor])
 
-      //TODO: Create watcher actor to watch for actor termination (You can finish the snippet)
-
-      /*case class IsTerminated(ref: ActorRef)
+      case class IsTerminated(ref: ActorRef)
       val watcher = system.actorOf(Props(new Actor {
-        context.watch(???)
+        override def preStart = {
+          context.watch(ref)
+        }
+
         override def receive: Receive = {
-          ???
+          case Terminated(_) => {
+            sender ! IsTerminated(ref)
+          }
+          case _ => println("something else")
         }
       }))
-      Thread.sleep(2000)*/
 
-      //TODO: Stop actor which is referenced by this ActorRef
 
-      //TODO: Verify that actor is stopped
+      system.stop(ref)
+      Thread.sleep(2000)
+
+      expectMsg(IsTerminated(ref))
     }
   }
 }
