@@ -28,8 +28,10 @@ import scala.concurrent.duration._
  * sbt > test-only ua.ucu.edu.EchoActorSpec
  */
 
-class EchoActor { //TODO: First, we need to make sure this extends Actor
-  //TODO: Then we need to implement the receive-method
+class EchoActor extends Actor {
+  override def receive: Receive = {
+    case msg: String => sender ! s"echo $msg"
+  }
 }
 
 /**
@@ -41,6 +43,9 @@ class EchoActorSpec extends BaseAkkaSpec(ActorSystem("test-system")) {
   "Exercise1" should {
 
     "teach you how to reply to the first message" in {
+      val ref = system.actorOf(Props[EchoActor]);
+      ref ! "Boo"
+      expectMsg("echo Boo")
       //TODO: Create an ActorRef pointing to an instance of your EchoActor
 
       //TODO: Send the ActorRef a String message using ask pattern and make sure you get the expected response

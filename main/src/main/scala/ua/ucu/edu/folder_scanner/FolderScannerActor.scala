@@ -54,7 +54,7 @@ object FolderScannerActor {
     import java.nio.file.{Paths, Files}
     import scala.collection.JavaConverters._
     //Location where you want to write results
-    val path = "/Users/twist/result.txt"
+    val path = "/Users/antonbilchuck/Desktop/result.txt"
     val resultPath = Paths.get(path)
     if (Files.exists(resultPath))
       Files.delete(resultPath)
